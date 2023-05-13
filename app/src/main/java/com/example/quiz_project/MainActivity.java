@@ -65,43 +65,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
-    void loadNewQuestion(){
-        if (currentQuestionIndex <= totalQuestion){
-           finishQuiz();
-       }
-//        questionTextView.setText(QuestionAnswer.question[currentQuestionIndex]);
-//        ansA.setText(QuestionAnswer.choices[currentQuestionIndex][0]);
-//        ansB.setText(QuestionAnswer.choices[currentQuestionIndex][1]);
-//        ansC.setText(QuestionAnswer.choices[currentQuestionIndex][2]);
-//        ansD.setText(QuestionAnswer.choices[currentQuestionIndex][3]);
-    }
-    void finishQuiz(){
-//        String passStatus;
-//        if (score>totalQuestion*0.60){
-//            passStatus="Passed";
-//        }else{
-//            passStatus="Failed";
-//        }
-//        new AlertDialog.Builder(this)
-//                .setTitle(passStatus)
-//                .setMessage("Score is"+score+"out of"+totalQuestion)
-//                .setPositiveButton("Restart",(dialogInterface, i) -> restartquiz() )
-//                .setCancelable(false)
-//                .show();
-//        Button restartButton = findViewById(R.id.restartquiz);
-//        restartButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //restartquiz();
-//            }
-//        }
-     //   );
+    void loadNewQuestion() {
+        if (currentQuestionIndex >= totalQuestion) {
+            finishQuiz();
+            return;
+        }
 
-    }
-    void restartquiz(){
-//        score=0;
-//        currentQuestionIndex=0;
-//        loadNewQuestion();
+        // make sure UI components are not null
+        if (questionTextView != null && ansA != null && ansB != null && ansC != null && ansD != null) {
+            questionTextView.setText(QuestionAnswer.question[currentQuestionIndex]);
+            ansA.setText(QuestionAnswer.choices[currentQuestionIndex][0]);
+            ansB.setText(QuestionAnswer.choices[currentQuestionIndex][1]);
+            ansC.setText(QuestionAnswer.choices[currentQuestionIndex][2]);
+            ansD.setText(QuestionAnswer.choices[currentQuestionIndex][3]);
+        }
     }
 
+    void finishQuiz() {
+        String passStatus;
+        if (score > totalQuestion * 0.60) {
+            passStatus = "Passed";
+        } else {
+            passStatus = "Failed";
+        }
+
+        // use a more meaningful message for the user
+        String message = "Your score is " + score + " out of " + totalQuestion;
+        new AlertDialog.Builder(this)
+                .setTitle(passStatus)
+                .setMessage(message)
+                .setPositiveButton("Restart", (dialogInterface, i) -> restartQuiz())
+                .setCancelable(false)
+                .show();
+    }
+
+    void restartQuiz() {
+        score = 0;
+        currentQuestionIndex = 0;
+        loadNewQuestion();
+    }
 }
+
